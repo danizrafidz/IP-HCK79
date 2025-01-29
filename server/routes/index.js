@@ -1,8 +1,9 @@
 const router = require("express").Router()
+const multer = require('multer')
 
 const ModuleController = require('../controllers/moduleController')
-// const MyModuleController = require('../controllers/myModuleController')
-// const TeamController = require('./controllers/teamController')
+const MyModuleController = require('../controllers/myModuleController')
+const TeamController = require('../controllers/teamController')
 const UserController = require('../controllers/userController')
 
 const authentication = require('../middlewares/authentication')
@@ -15,14 +16,14 @@ router.post('/login', UserController.login)
 router.use(authentication)
 
 //! Routes below need authentication:
-// router.get('/user', UserController.getUser)
+router.get('/user', UserController.getUser)
 // router.patch('/user/cover-avatar', UserController.updateUserAvatar)
 
-// router.get('/modules', ModuleController.getModules)
-// router.get('/modules/:id', ModuleController.getModuleById)
-// router.get('/mymodules', MyModuleController.getMyModules)
-// router.post('/mymodules/:moduleId', MyModuleController.createMyModule)
-// router.get('/teams', TeamController.getTeams)
+router.get('/modules', ModuleController.getModules)
+router.get('/modules/:id', ModuleController.getModuleById)
+router.get('/mymodules', MyModuleController.getMyModules)
+router.post('/mymodules/:moduleId', MyModuleController.createMyModule)
+router.get('/teams', TeamController.getTeams)
 
 //! Routes below need authentication & authorization:
 // router.delete('/mymodules/:id', authorization, MyModuleController.deleteMyModule)

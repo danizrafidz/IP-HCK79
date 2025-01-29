@@ -1,6 +1,6 @@
 const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
-const { User } = require('../models')
+const { User, Team } = require('../models')
 
 // "//" = NOT YET
 // "//*" = DONE
@@ -53,6 +53,26 @@ class UserController {
 
       // Response (200 - OK)
       res.status(200).json({ access_token })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async getUser(req, res, next) { //* 3. GET /user
+    try {
+      const userId = +req.user.id
+
+      // Response (400 - Bad Request)
+      let user = await User.findByPk(userId, {
+        attributes: { exclude: ['password'] },
+        include: {
+          model: Team,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+        }
+      })
+
+      // Response (200 - OK)
+      res.status(200).json(user)
     } catch (err) {
       next(err)
     }
