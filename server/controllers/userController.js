@@ -8,15 +8,19 @@ class UserController {
   static async register(req, res, next) { //* 1. POST /register
     try {
       // Request (body)
-      const { email, password } = req.body
+      const { fullName, email, password, avatarUrl, TeamId } = req.body
 
       // Response (400 - Bad Request)
-      let user = await User.create({ email, password })
+      let user = await User.create({ fullName, email, password, avatarUrl, TeamId })
 
       // Response (201 - Created)
       res.status(201).json({
         id: user.id,
-        email: user.email
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        avatarUrl: user.avatarUrl,
+        TeamId: user.TeamId,
       })
     } catch (err) {
       next(err)

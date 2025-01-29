@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { hashPassword } = require('../helpers/bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -67,11 +68,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: 'User',
+      allowNull: false,
+      defaultValue: 'user'
     },
     avatarUrl: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false,
+      defaultValue: "https://cdn-icons-png.flaticon.com/512/2165/2165674.png"
     },
     TeamId: {
       type: DataTypes.INTEGER,
@@ -86,6 +89,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
   }, {
+    hooks: {
+      beforeCreate: (user) => {
+        user.password = hashPassword(user.password)
+      }
+    },
     sequelize,
     modelName: 'User',
   });

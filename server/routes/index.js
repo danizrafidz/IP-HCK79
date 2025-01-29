@@ -1,24 +1,31 @@
 const router = require("express").Router()
 
-// const ModuleController = require('./controllers/moduleController')
+const ModuleController = require('../controllers/moduleController')
+// const MyModuleController = require('../controllers/myModuleController')
+// const TeamController = require('./controllers/teamController')
 const UserController = require('../controllers/userController')
 
-// const authentication = require('../middlewares/authentication')
-// const authorization = require('../middlewares/authorization')
+const authentication = require('../middlewares/authentication')
+const authorization = require('../middlewares/authorization')
 
 //! List of available endpoints:
 router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 
-// router.use(authentication)
+router.use(authentication)
 
 //! Routes below need authentication:
-// router.get('/vouchers', ModuleController.getVouchers)
-// router.post('/gifts/:voucherId', ModuleController.createGift)
-// router.get('/gifts', ModuleController.getGifts)
+// router.get('/user', UserController.getUser)
+// router.patch('/user/cover-avatar', UserController.updateUserAvatar)
+
+// router.get('/modules', ModuleController.getModules)
+// router.get('/modules/:id', ModuleController.getModuleById)
+// router.get('/mymodules', MyModuleController.getMyModules)
+// router.post('/mymodules/:moduleId', MyModuleController.createMyModule)
+// router.get('/teams', TeamController.getTeams)
 
 //! Routes below need authentication & authorization:
-// router.patch('/gifts/:id/claim', authorization, ModuleController.claimGift)
-// router.delete('/gifts/:id', authorization, ModuleController.deleteGift)
+// router.delete('/mymodules/:id', authorization, MyModuleController.deleteMyModule)
+// router.patch('/mymodules/:id/complete', authorization, MyModuleController.completeModule)
 
 module.exports = router
