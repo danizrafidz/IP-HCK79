@@ -1,0 +1,56 @@
+DO WITH THIS PROMPT!
+RAW FORMAT:
+Intro to Academy
+Intro to Academy
+
+Tier 0 Fundamental General 8 Sections +10 30 minutes
+
+NEW
+threat-spotlight tagThreat Spotlight
+Intro to Academy's Purple Modules
+Intro to Academy's Purple Modules
+
+Tier 0 Medium Purple 12 Sections +10 4 hours
+
+CONVERT TO JSON FORMAT:
+json
+[
+  {
+    "id": 1,
+    "title": "Intro to Academy",
+    "imageUrl": "https://academy.hackthebox.com/storage/modules/15/logo.png",
+    "description": "Your first stop in Hack The Box Academy to become acquainted with the platform, its features, and its learning process.",
+    "tier": "Tier 0",
+    "difficulty": "Fundamental",
+    "TeamId": 1
+  },
+  {
+    "id": 2,
+    "title": "Intro to Academy's Purple Modules",
+    "imageUrl": "https://academy.hackthebox.com/storage/modules/257/logo.png",
+    "description": "This module will introduce you to HTB Academy's Purple modules, which bridge the gap between Offensive and Defensive modules and provide a holistic view of both the attacking and defending perspectives on the covered topics. More specifically, the Purple modules will allow for in-depth forensic analysis through detailed logging, traffic and memory capturing, and an installed DFIR toolset within each target after completing the attack part of each section.",
+    "tier": "Tier 0",
+    "difficulty": "Medium",
+    "TeamId": 3
+  },
+  ...,
+]
+
+
+RULES/REQUIREMENT:
+- If there are two names, that's the title
+- empty string the imageUrl
+- empty string the description
+- tier format (ex: "tier": "Tier I") - based on data given
+- difficulty format ("tier": "Easy") - based on data given
+- TeamId format ("TeamId": 1)
+TeamId 1 is Offensive 
+TeamId 2 is Defensive
+TeamId 3 is General or Purple
+- Ignore something like 12 Sections +100 2 days
+
+YOUR TASK TO CONVERT THIS RAW FORMAT TO CORRECT FORMAT REQUIREMENTS I GIVEN ACCURATELY!:
+
+-> 
+
+Continue from id 106 which is Supply Chain Attacks.

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Red",
+    "focus": "Offensive"
+  },
+  {
+    "id": 2,
+    "name": "Blue",
+    "focus": "Defensive"
+  },
+  {
+    "id": 3,
+    "name": "Purple",
+    "focus": "Hybrid"
+  }
+]

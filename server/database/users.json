@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "fullName": "Admin Alpha",
+    "email": "admin.alpha@mail.com",
+    "password": "adminalpha",
+    "role": "admin",
+    "avatarUrl": "https://www.hackthebox.com/storage/avatars/30fc6acef9d23aa9fd71277123c64f24.png",
+    "TeamId": 3
+  },
+  {
+    "id": 2,
+    "fullName": "Red Romeo",
+    "email": "red.romeo@mail.com",
+    "password": "redromeo",
+    "role": "user",
+    "avatarUrl": "https://www.hackthebox.com/storage/avatars/38540a940e0ea29b56a8ccc5d50572e8.png",
+    "TeamId": 1
+  },
+  {
+    "id": 3,
+    "fullName": "Blue Bravo",
+    "email": "blue.bravo@mail.com",
+    "password": "bluebravo",
+    "role": "user",
+    "avatarUrl": "https://www.hackthebox.com/storage/avatars/52e077ae40899ab8b024afd51cb29b1c.png",
+    "TeamId": 2
+  },
+  {
+    "id": 4,
+    "fullName": "Purple Papa",
+    "email": "purple.papa@mail.com",
+    "password": "purplepapa",
+    "role": "user",
+    "avatarUrl": "https://www.hackthebox.com/storage/avatars/642db092f1e18466871db9f12933396f.png",
+    "TeamId": 3
+  }
+]
