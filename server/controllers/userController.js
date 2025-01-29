@@ -2,6 +2,13 @@ const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 const { User, Team } = require('../models')
 
+const cloudinary = require('cloudinary').v2
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 // "//" = NOT YET
 // "//*" = DONE
 class UserController {
@@ -73,6 +80,39 @@ class UserController {
 
       // Response (200 - OK)
       res.status(200).json(user)
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async updateUserAvatar(req, res, next) { //* 4. PATCH /user/cover-avatar
+    try {
+      const userId = +req.user.id
+      const avatarUrl = req.file
+
+      // Response (400 - Bad Request)
+      if (!avatarUrl) {
+        throw { name: 'BadRequest', message: 'Image is required' }
+      }
+
+      const mimeType = avatarUrl.mimetype
+      const base64Image = avatarUrl.buffer.toString("base64")
+
+      const result = await cloudinary.uploader.upload(
+        `data:${mimeType};base64,${base64Image}`,
+        {
+          folder: 'hackthegrid_img',
+          public_id: avatarUrl.originalname,
+        }
+      )
+
+      await User.update(
+        { avatarUrl: result.secure_url },
+        { where: { id: userId } }
+      )
+
+      // Response (200 - OK)
+      res.status(200).json({ message: "User avatar successfully updated" })
     } catch (err) {
       next(err)
     }

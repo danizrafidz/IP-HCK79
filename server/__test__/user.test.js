@@ -15,6 +15,14 @@ const user = {
   password: "redromeo",
 };
 
+const dummyUser = {
+  fullName: "Dummy Delta",
+  email: "dummy.delta@mail.com",
+  password: "dummydelta",
+  avatarUrl: "https://dummy.png",
+  TeamId: 2
+}
+
 valid_access_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzM4MTY2OTg3fQ.jZOFp2iJoI_RvlhxjNM5SYdH3t_z6rPLtHld2506PPQ'
 invalid_access_token = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
 
@@ -26,6 +34,7 @@ beforeAll(async () => {
   })
 
   let users = require('../data/users.json').map((user) => {
+    delete user.id
     user.createdAt = new Date()
     user.updatedAt = new Date()
     user.password = hashPassword(user.password)
@@ -51,8 +60,47 @@ afterAll(async () => {
   })
 })
 
+describe("POST /register", () => {
+  test("201 - Successful register", async () => {
+    const res = await request(app)
+      .post('/register')
+      .send(dummyUser)
+    const { body, status } = res;
+
+    console.log("🚀 ~ POST /register ~ test1", status, body, '<<< LOG')
+    expect(status).toBe(201)
+    expect(body).toHaveProperty("id", expect.any(Number));
+  })
+  test("400 - Failed to register as password not inputted", async () => {
+    const res = await request(app)
+      .post('/register')
+      .send({
+        ...dummyUser,
+        password: ""
+      })
+    const { body, status } = res;
+
+    console.log("🚀 ~ POST /register ~ test2", status, body, '<<< LOG')
+    expect(status).toBe(400)
+    expect(body).toHaveProperty("message", "Password is required")
+  })
+  test("400 - Failed to register as email inputted invalid", async () => {
+    const res = await request(app)
+      .post('/register')
+      .send({
+        ...dummyUser,
+        email: "invalidemail"
+      })
+    const { body, status } = res;
+
+    console.log("🚀 ~ POST /register ~ test3", status, body, '<<< LOG')
+    expect(status).toBe(400)
+    expect(body).toHaveProperty("message", "Invalid email format")
+  })
+})
+
 describe("POST /login", () => {
-  test("201 - Successfully login and get access_token", async () => {
+  test("200 - Successfully login and get access_token", async () => {
     const res = await request(app)
       .post('/login')
       .send(user)
@@ -63,7 +111,7 @@ describe("POST /login", () => {
     expect(body).toHaveProperty("access_token", expect.any(String));
     expect(verifyToken(body.access_token).id).toBe(2)
   })
-  test("400 - Email not inputted", async () => {
+  test("400 - Failed to login as email not inputted", async () => {
     const res = await request(app)
       .post('/login')
       .send({
@@ -76,7 +124,7 @@ describe("POST /login", () => {
     expect(status).toBe(400)
     expect(body).toHaveProperty("message", "Email is required")
   })
-  test("400 - Password not inputted", async () => {
+  test("400 - Failed to login as password not inputted", async () => {
     const res = await request(app)
       .post('/login')
       .send({
@@ -89,7 +137,7 @@ describe("POST /login", () => {
     expect(status).toBe(400)
     expect(body).toHaveProperty("message", "Password is required")
   })
-  test("401 - Email inputted invalid", async () => {
+  test("401 - Failed to login as email inputted invalid", async () => {
     const res = await request(app)
       .post('/login')
       .send({
@@ -118,14 +166,33 @@ describe("POST /login", () => {
 })
 
 describe("GET /user", () => {
-  test("200 - Get current logged-in user from database", async () => {
+  test("200 - Successful get current logged-in user from database", async () => {
     const res = await request(app)
-      .post('/login')
+      .get('/user')
       .set('Authorization', 'Bearer ' + valid_access_token)
     const { body, status } = res;
 
-    console.log("🚀 ~ POST /user ~ test1", status, body, '<<< LOG')
+    console.log("🚀 ~ GET /user ~ test1", status, body, '<<< LOG')
     expect(status).toBe(200)
     expect(body).toHaveProperty("id", 2)
+  })
+  test("401 - Failed get user as access token not given", async () => {
+    const res = await request(app)
+      .get('/user')
+    const { body, status } = res;
+
+    console.log("🚀 ~ GET /user ~ test1", status, body, '<<< LOG')
+    expect(status).toBe(401)
+    expect(body).toHaveProperty("message", "Invalid token")
+  })
+  test("401 - Failed get user access token given incorrectly", async () => {
+    const res = await request(app)
+      .get('/user')
+      .set('Authorization', 'Bearer ' + invalid_access_token)
+    const { body, status } = res;
+
+    console.log("🚀 ~ GET /user ~ test1", status, body, '<<< LOG')
+    expect(status).toBe(401)
+    expect(body).toHaveProperty("message", "Invalid token")
   })
 })

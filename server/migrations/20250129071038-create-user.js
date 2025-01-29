@@ -31,6 +31,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       TeamId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {
