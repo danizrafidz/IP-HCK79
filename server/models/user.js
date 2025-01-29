@@ -11,12 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Module, { as: "Author", foreignKey: "AuthorId" })
+      User.hasMany(models.MyModule, { foreignKey: "UserId" })
+      User.belongsTo(models.Team, { foreignKey: "TeamId" })
     }
   }
   User.init({
     fullName: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Full Name is required'
+        },
+        notEmpty: {
+          msg: 'Full Name is required'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
@@ -64,7 +75,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     TeamId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Team is required'
+        },
+        notEmpty: {
+          msg: 'Team is required'
+        }
+      }
     },
   }, {
     sequelize,

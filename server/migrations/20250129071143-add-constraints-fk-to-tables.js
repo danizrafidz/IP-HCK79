@@ -17,7 +17,7 @@ module.exports = {
         table: 'Teams',
         field: 'id'
       },
-      onDelete: 'SET NULL',
+      onDelete: 'CASCADE',
       onUpdate: 'CASCADE '
     });
 
