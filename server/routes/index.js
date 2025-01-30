@@ -22,6 +22,7 @@ router.get('/user', UserController.getUser)
 router.patch('/user/cover-avatar', upload.single('avatarUrl'), UserController.updateUserAvatar)
 
 router.get('/modules', ModuleController.getModules)
+router.get('/modules/recommended', ModuleController.getRecommendedModulesAi)
 router.get('/modules/:id', ModuleController.getModuleById)
 router.get('/mymodules', MyModuleController.getMyModules)
 router.post('/mymodules/:moduleId', MyModuleController.createMyModule)

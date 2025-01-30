@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'https://www.hackthebox.eu/api/v4/user/profile/bloods/9001',
+  // baseURL: 'https://server.danizrafidz.my.id/',
+  baseURL: 'http://localhost:3000/',
 });
 
 export default api

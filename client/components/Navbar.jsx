@@ -8,8 +8,8 @@ export default function Navbar() {
         <HTGLogo />
       </div>
       <div className="navbar-end">
-        <Link to="/register" className="btn btn-primary text-[#0b121f]">
-          Get Started
+        <Link to="/register" className="btn bg-base-200 text-[#0b121f]">
+          Login
         </Link>
         <Link to="/register" className="btn btn-primary text-[#0b121f]">
           Get Started
