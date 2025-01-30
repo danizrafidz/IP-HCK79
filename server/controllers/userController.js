@@ -1,6 +1,7 @@
 const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 const { User, Team } = require('../models')
+const { OAuth2Client } = require("google-auth-library");
 
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
@@ -64,6 +65,50 @@ class UserController {
       next(err)
     }
   }
+
+  static async loginGoogle(req, res, next) { //* 3. POST /login-google
+    try {
+      // hooks option
+      const { googletoken } = req.headers;
+
+      const client = new OAuth2Client();
+
+      const ticket = await client.verifyIdToken({
+        idToken: googletoken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+
+      let user = await User.findOne({
+        where: {
+          email: payload.email,
+        },
+      });
+
+      if (!user) {
+        user = await User.create(
+          {
+            email: payload.email,
+            password: "googlelogin",
+          },
+          {
+            hooks: false,
+          }
+        );
+      } else {
+        if (user.password !== "googlelogin") {
+          throw { name: "Conflict", message: "You already registered with our app" };
+        }
+      }
+
+      const access_token = signToken({ id: user.id });
+
+      res.status(200).json({ access_token });
+    } catch (err) {
+      next(err)
+    }
+  };
 
   static async getUser(req, res, next) { //* 3. GET /user
     try {

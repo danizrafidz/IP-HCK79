@@ -16,6 +16,9 @@ function errorHandler(err, req, res, next) {
     case 'NotFound':
       res.status(404).json({ message: err.message })
       return;
+    case 'Conflict':
+      res.status(409).json({ message: err.message })
+      return;
     case 'JsonWebTokenError':
       res.status(401).json({ message: 'Invalid token' })
       return;
