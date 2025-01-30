@@ -2,6 +2,7 @@ const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 const { User, Team } = require('../models')
 const { OAuth2Client } = require("google-auth-library");
+require('dotenv').config();
 
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
@@ -69,16 +70,19 @@ class UserController {
   static async loginGoogle(req, res, next) { //* 3. POST /login-google
     try {
       // hooks option
-      const { googletoken } = req.headers;
+      const { googleToken } = req.headers;
 
       const client = new OAuth2Client();
 
       const ticket = await client.verifyIdToken({
-        idToken: googletoken,
+        idToken: googleToken,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
 
+      
+      
       const payload = ticket.getPayload();
+      console.log(payload, "<<< INI");
 
       let user = await User.findOne({
         where: {
