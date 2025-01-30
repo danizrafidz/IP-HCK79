@@ -1,4 +1,4 @@
-const { User, Module, Team } = require('../models')
+const { User, Module, MyModule, Team } = require('../models')
 const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -29,17 +29,39 @@ class ModuleController {
 
   static async getRecommendedModulesAi(req, res, next) { //* ?. GET /modules/recommended
     try {
-      // const userId = +req.user.id
+      const userId = +req.user.id
 
-      // // Response (400 - Bad Request)
-      // let user = await User.findByPk(userId, {
-      //   attributes: ['TeamId'],
-      //   include: {
-      //     model: Team,
-      //     attributes: ['name', 'task'],
-      //   }
-      // })
-      // let team = user.Team
+      // Response (400 - Bad Request)
+      let user = await User.findByPk(userId, {
+        attributes: ['TeamId'],
+        include: {
+          model: Team,
+          attributes: ['name', 'focus'],
+        }
+      })
+      let team = user.Team
+
+      let modules = await Module.findAll({
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: {
+          model: Team,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        }
+      })
+
+      let myModules = await MyModule.findAll({
+        include: {
+          model: Module,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        where: { UserId: userId }
+      })
+      myModules = myModules.map((myModule) => {
+        return {
+          tier: myModule.Module.tier,
+          difficulty: myModule.Module.difficulty
+        }
+      })
 
       const schema = {
         description: "List of modules",
@@ -62,10 +84,6 @@ class ModuleController {
         },
       };
 
-      let modules = await Module.findAll({
-        attributes: {exclude: ["createdAt", "updatedAt"]},
-      })
-
       const model = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
         generationConfig: {
@@ -74,12 +92,12 @@ class ModuleController {
         },
       });
 
-
-
       (async () => {
         const prompt = `
-  You are a ${team.name} team enthusiast who loves ${team.task} cybersecurity.
-  Give me top 3 modules recommendation based on following data:
+  This user is a ${team.name} team enthusiast who loves ${team.focus} cybersecurity.
+  This is user's enrolled courses statistic (tier and difficulty) in json format: ${JSON.stringify(myModules)}
+  Give user top 3 modules recommendation based on user's team, tier, and difficulty.
+  Here is the full data:
       ${JSON.stringify(modules.map((module) => ({
           id: module.id,
           title: module.title,
