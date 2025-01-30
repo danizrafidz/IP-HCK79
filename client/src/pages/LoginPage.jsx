@@ -71,7 +71,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center h-dvh">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 scale-125">
         <HTGLogo />
 
         <form onSubmit={handleLogin}>

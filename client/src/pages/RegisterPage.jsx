@@ -83,7 +83,9 @@ export default function RegisterPage() {
                 />
               </div>
               <div>
-              <label className="text-purple-300 font-extrabold mr-2">Purple</label>
+                <label className="text-purple-300 font-extrabold mr-2">
+                  Purple
+                </label>
                 <input
                   type="radio"
                   name="team-radio"
