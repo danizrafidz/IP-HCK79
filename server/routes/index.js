@@ -20,6 +20,7 @@ router.use(authentication)
 //! Routes below need authentication:
 router.get('/user', UserController.getUser)
 router.patch('/user/cover-avatar', upload.single('avatarUrl'), UserController.updateUserAvatar)
+router.patch('/user/cover-galleries', upload.array('galleries', 3), UserController.updateUserGalleries)
 
 router.get('/modules', ModuleController.getModules)
 router.get('/modules/recommended', ModuleController.getRecommendedModulesAi)

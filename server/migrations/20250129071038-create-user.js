@@ -30,6 +30,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      galleries: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
       TeamId: {
         allowNull: false,
         type: Sequelize.INTEGER

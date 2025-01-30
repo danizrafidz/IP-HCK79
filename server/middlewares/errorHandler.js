@@ -22,6 +22,9 @@ function errorHandler(err, req, res, next) {
     case 'JsonWebTokenError':
       res.status(401).json({ message: 'Invalid token' })
       return;
+    case 'MulterError':
+      res.status(400).json({ message: 'Limit unexpected file' })
+      return;
     default:
       console.log(err, '<<< ISE LOG');
       res.status(500).json({ message: 'Internal server error' })

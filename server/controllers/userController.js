@@ -169,6 +169,46 @@ class UserController {
       next(err)
     }
   }
+
+  static async updateUserGalleries(req, res, next) { //* 4. PATCH /user/cover-avatar
+    try {
+      const userId = +req.user.id
+      const galleries = req.files
+
+      console.log("Uploading...");
+
+      // Response (400 - Bad Request)
+      if (galleries.length === 0) {
+        throw { name: 'BadRequest', message: 'Image is required' }
+      }
+
+      let galleryUrls = []
+
+      for (const gallery of galleries) {
+        const mimeType = gallery.mimetype
+        const base64Image = gallery.buffer.toString("base64")
+
+        let result = await cloudinary.uploader.upload(
+          `data:${mimeType};base64,${base64Image}`,
+          {
+            folder: 'hackthegrid_img',
+            public_id: gallery.originalname,
+          });
+        galleryUrls.push(result.secure_url)
+      }
+
+      await User.update(
+        { galleries: galleryUrls },
+        { where: { id: userId } }
+      )
+
+      console.log("Uploaded.");
+      // Response (200 - OK)
+      res.status(200).json({ message: "User galleries successfully updated" })
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = UserController

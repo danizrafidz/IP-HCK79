@@ -76,6 +76,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: "https://cdn-icons-png.flaticon.com/512/2165/2165674.png"
     },
+    galleries: {
+      type: DataTypes.ARRAY(DataTypes.STRING)
+    },
     TeamId: {
       type: DataTypes.INTEGER,
       allowNull: false,
