@@ -78,8 +78,6 @@ class UserController {
         idToken: googleToken,
         audience: process.env.GOOGLE_CLIENT_ID,
       });
-
-      
       
       const payload = ticket.getPayload();
       console.log(payload, "<<< INI");

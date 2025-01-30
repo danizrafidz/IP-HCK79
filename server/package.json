@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --forceExit --verbose --detectOpenHandles",
-    "dev": "npx nodemon bin/www"
+    "dev": "set NODE_ENV=development&&npx nodemon bin/www",
+    "start": "set NODE_ENV=production&&npx nodemon bin/www"
   },
   "keywords": [],
   "author": "",
