@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1738304605492" clover="3.2.0">
-  <project timestamp="1738304605493" name="All files">
-    <metrics statements="302" coveredstatements="225" conditionals="56" coveredconditionals="40" methods="39" coveredmethods="29" elements="397" coveredelements="294" complexity="0" loc="302" ncloc="302" packages="6" files="17" classes="17"/>
+<coverage generated="1738308905009" clover="3.2.0">
+  <project timestamp="1738308905010" name="All files">
+    <metrics statements="300" coveredstatements="225" conditionals="55" coveredconditionals="40" methods="39" coveredmethods="29" elements="394" coveredelements="294" complexity="0" loc="300" ncloc="300" packages="6" files="17" classes="17"/>
     <package name="server">
       <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="app.js" path="C:\Users\DELL\Documents\Hacktiv8\Phase 2\Projects\IP-HCK79\server\app.js">
@@ -208,7 +208,7 @@
       </file>
     </package>
     <package name="server.middlewares">
-      <metrics statements="53" coveredstatements="45" conditionals="22" coveredconditionals="17" methods="4" coveredmethods="4"/>
+      <metrics statements="51" coveredstatements="45" conditionals="21" coveredconditionals="17" methods="4" coveredmethods="4"/>
       <file name="authentication.js" path="C:\Users\DELL\Documents\Hacktiv8\Phase 2\Projects\IP-HCK79\server\middlewares\authentication.js">
         <metrics statements="17" coveredstatements="15" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="3" type="stmt"/>
@@ -246,8 +246,8 @@
         <line num="26" count="3" type="stmt"/>
       </file>
       <file name="errorHandler.js" path="C:\Users\DELL\Documents\Hacktiv8\Phase 2\Projects\IP-HCK79\server\middlewares\errorHandler.js">
-        <metrics statements="20" coveredstatements="14" conditionals="10" coveredconditionals="7" methods="1" coveredmethods="1"/>
-        <line num="2" count="17" type="cond" truecount="7" falsecount="3"/>
+        <metrics statements="18" coveredstatements="14" conditionals="9" coveredconditionals="7" methods="1" coveredmethods="1"/>
+        <line num="2" count="17" type="cond" truecount="7" falsecount="2"/>
         <line num="5" count="2" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="8" count="4" type="stmt"/>
@@ -258,15 +258,13 @@
         <line num="15" count="2" type="stmt"/>
         <line num="17" count="4" type="stmt"/>
         <line num="18" count="4" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
-        <line num="29" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
       </file>
       <file name="requestActivity.js" path="C:\Users\DELL\Documents\Hacktiv8\Phase 2\Projects\IP-HCK79\server\middlewares\requestActivity.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
