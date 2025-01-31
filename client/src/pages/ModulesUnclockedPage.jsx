@@ -9,7 +9,9 @@ export default function ModulesUnlockedPage() {
   // const [myModules, setMyModules] = useState([]);
   // const access_token = localStorage.getItem("access_token");
 
-  const myModules = useSelector((state) => state.myModules);
+  const myModules = useSelector((state) => state.myModules.list);
+  console.log(myModules);
+  
   const dispatch = useDispatch();
 
   // async function fetchModulesUnlocked() {
@@ -30,7 +32,7 @@ export default function ModulesUnlockedPage() {
     dispatch(fetchModulesUnlocked());
   }, []);
 
-  if (myModules.length === 0) {
+  if (myModules?.length === 0) {
     return (
       <div className="flex justify-center items-center h-[80dvh] gap-4">
         <span className="loading loading-spinner loading-lg"></span>
@@ -56,12 +58,12 @@ export default function ModulesUnlockedPage() {
         </div>
       </div>
       <div className="container w-full flex flex-wrap justify-center">
-        {myModules.map((myModule) => (
+        {myModules?.map((myModule) => (
           <ModuleCard
             key={myModule.id}
             module={myModule.Module}
-            cardType="MyModule"
             fetchModulesUnlocked={fetchModulesUnlocked}
+            cardType="MyModule"
             myModuleId={myModule.id}
             isCompleted={myModule.isCompleted}
           />

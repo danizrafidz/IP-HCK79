@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { FaCheck } from "react-icons/fa";
 import Toast from "../helpers/toast";
 import api from "../helpers/axiosInstance";
+import { useDispatch } from "react-redux";
 
 export default function ModuleCard({
   module,
@@ -13,7 +14,9 @@ export default function ModuleCard({
   myModuleId,
   isCompleted,
 }) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   let teamColor = {
     Red: "bg-[#422834] text-[#ff3d3d]",
     Blue: "bg-[#153557] text-[#0088ff]",
@@ -61,8 +64,9 @@ export default function ModuleCard({
     }
   }
 
-  async function handleRemoveModule() {
+  async function handleRemoveModule(e) {
     try {
+      e.stopPropagation(e);
       await api({
         method: "DELETE",
         url: `/mymodules/${myModuleId}`,
@@ -75,7 +79,7 @@ export default function ModuleCard({
         title: "Success",
         text: "You have removed a module",
       });
-      await fetchModulesUnlocked();
+      dispatch(fetchModulesUnlocked());
     } catch (err) {
       console.log(err, "<<< err handleRemoveModule");
       Toast.fire({
@@ -86,8 +90,9 @@ export default function ModuleCard({
     }
   }
 
-  async function handleCompleteModule() {
+  async function handleCompleteModule(e) {
     try {
+      e.stopPropagation();
       await api({
         method: "PATCH",
         url: `/mymodules/${myModuleId}/complete`,
@@ -100,7 +105,7 @@ export default function ModuleCard({
         title: "Success",
         text: "You have completed a module",
       });
-      await fetchModulesUnlocked();
+      dispatch(fetchModulesUnlocked());
     } catch (err) {
       console.log(err, "<<< err handleCompleteModule");
       Toast.fire({
@@ -114,7 +119,7 @@ export default function ModuleCard({
   return (
     <div
       onClick={() => navigate(`/module/details/${module.id}`)}
-      className={`card bg-[#1b2333] w-96 shadow-sm m-3 cursor-pointer ${
+      className={`card bg-[#1b2333] w-96 shadow-sm m-3 cursor-pointer hover:opacity-75 hover:scale-110 ${
         cardType === "RecModule" ? "border-2 border-primary" : ""
       }`}
     >
