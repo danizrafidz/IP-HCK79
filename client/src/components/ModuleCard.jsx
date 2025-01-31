@@ -37,7 +37,7 @@ export default function ModuleCard({
     Medium: "bg-[#423c28] text-[#ffae00]",
     Hard: "bg-[#422834] text-[#ff3d3d]",
   };
-
+  
   const access_token = localStorage.getItem("access_token");
   async function handleUnlockModule() {
     try {

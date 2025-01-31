@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --forceExit --verbose --detectOpenHandles",
+    "test": "jest --coverage --runInBand --forceExit --verbose --detectOpenHandles",
     "dev": "set NODE_ENV=development&&npx nodemon bin/www",
     "start": "set NODE_ENV=production&&npx nodemon bin/www"
   },
