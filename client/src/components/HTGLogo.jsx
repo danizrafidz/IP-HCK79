@@ -3,7 +3,7 @@ export default function HTGLogo({ styles }) {
     <div className={`flex tracking-widest gap-2 items-center ${styles}`}>
       <img
         className="w-auto h-6 sm:h-7"
-        src="./src/assets/img/hackthegrid.png"
+        src="https://res.cloudinary.com/dlo3c5sn7/image/upload/v1738310860/hackthegrid_osol9t.png"
       />
       <div className="flex">
         <p className="font-bold">HACK</p>

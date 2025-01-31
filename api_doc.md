@@ -98,7 +98,6 @@ Request:
   "fullName": "string",
   "email": "string",
   "password": "string",
-  "avatarUrl": "string (optional)",
   "TeamId": "integer"
 }
 ```
@@ -111,7 +110,7 @@ _Response (201 - Created)_
   "fullName": "Dummy Delta",
   "email": "dummy.delta@mail.com",
   "role": "user",
-  "avatarUrl": "https://dummy.png",
+  "avatarUrl": "https://cdn-icons-png.flaticon.com/512/2165/2165674.png",
   "TeamId": 2
 }
 ```
@@ -189,7 +188,29 @@ _Response (401 - Unauthorized)_
 
 &nbsp;
 
-## 3. GET /user
+## 3. POST /login/google
+
+Request:
+
+- body:
+
+```json
+{
+  "idToken": "<token>"
+}
+```
+
+_Response (200 - OK)_
+
+```json
+{
+  "access_token": "string"
+}
+```
+
+&nbsp;
+
+## 4. GET /user
 
 Description:
 
@@ -227,7 +248,7 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## 4. PATCH /user/cover-avatar
+## 5. PATCH /user/cover-avatar
 
 Description:
 
@@ -261,7 +282,45 @@ _Response (400 - Bad Request)_
 
 &nbsp;
 
-## 5. GET /modules
+## 6. PATCH /user/cover-galleries
+
+Description:
+
+- Update user galleries
+
+Request:
+
+- headers:
+
+```json
+{
+  "authorization": "Bearer <token>"
+}
+```
+
+_Response (200 - OK)_
+
+```json
+{
+  "message": "User galleries successfully updated"
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Image is required"
+}
+OR
+{
+  "message": "Limit unexpected file"
+}
+```
+
+&nbsp;
+
+## 7. GET /modules
 
 Description:
 
@@ -317,7 +376,71 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## 6. GET /modules/:id
+## 8. GET /modules/recommended
+
+Description:
+
+- Get all recommended modules by 3rd party API Gemini based on user's team and modules.
+
+Request:
+
+- headers:
+
+```json
+{
+  "authorization": "Bearer <token>"
+}
+```
+
+_Response (200 - OK)_
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Intro to Academy",
+    "imageUrl": "https://academy.hackthebox.com/storage/modules/15/logo.png",
+    "description": "Your first stop in Hack The Box Academy to become acquainted with the platform, its features, and its learning process.",
+    "tier": "Tier 0",
+    "difficulty": "Fundamental",
+    "AuthorId": 1,
+    "TeamId": 1,
+    "Team": {
+        "id": 1,
+        "name": "Red",
+        "focus": "Offensive"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Intro to Academy's Purple Modules",
+    "imageUrl": "https://academy.hackthebox.com/storage/modules/257/logo.png",
+    "description": "This module will introduce you to HTB Academy's Purple modules, which bridge the gap between Offensive and Defensive modules and provide a holistic view of both the attacking and defending perspectives on the covered topics. More specifically, the Purple modules will allow for in-depth forensic analysis through detailed logging, traffic and memory capturing, and an installed DFIR toolset within each target after completing the attack part of each section.",
+    "tier": "Tier 0",
+    "difficulty": "Medium",
+    "AuthorId": 1,
+    "TeamId": 3,
+    "Team": {
+        "id": 3,
+        "name": "Purple",
+        "focus": "Hybrid"
+    }
+  },
+  ...,
+]
+```
+
+_Response (503 - Service Unavailable)_
+
+```json
+{
+  "message": "Service Unavailable"
+}
+```
+
+&nbsp;
+
+## 9. GET /modules/:id
 
 Description:
 
@@ -373,7 +496,7 @@ _Response (404 - Not Found)_
 
 &nbsp;
 
-## 7. GET /mymodules
+## 10. GET /mymodules
 
 Description:
 
@@ -445,7 +568,7 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## 8. POST /mymodules/:moduleId
+## 11. POST /mymodules/:moduleId
 
 Description:
 
@@ -498,7 +621,7 @@ _Response (400 - Bad Request)_
 
 &nbsp;
 
-## 9. GET /teams
+## 12. GET /teams
 
 Description:
 
@@ -534,7 +657,7 @@ _Response (200 - OK)_
 
 &nbsp;
 
-## 10. DELETE /mymodules/:id
+## 13. DELETE /mymodules/:id
 
 Description:
 
@@ -584,7 +707,7 @@ Response (403 - Forbidden)
 
 &nbsp;
 
-## 11. PATCH /mymodules/:id/complete
+## 14. PATCH /mymodules/:id/complete
 
 Description:
 

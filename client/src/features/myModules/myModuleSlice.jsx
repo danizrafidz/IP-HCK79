@@ -28,7 +28,7 @@ export const fetchModulesUnlocked = () => {
           authorization: `Bearer ${access_token}`,
         },
       });
-      console.log(data, "DATABOS");
+      console.log(data, "<<< myModuleSlice");
 
       dispatch(setMyModules(data));
     } catch (err) {
