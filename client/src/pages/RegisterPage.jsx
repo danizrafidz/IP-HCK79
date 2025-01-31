@@ -3,7 +3,7 @@ import AuthInput from "../components/AuthInput";
 import HTGLogo from "../components/HTGLogo";
 import { Link, useNavigate } from "react-router";
 import api from "../helpers/axiosInstance";
-import Swal from "sweetalert2";
+import Toast from "../helpers/toast";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [team, setTeam] = useState(0);
 
   async function handleRegister(e) {
     try {
@@ -19,12 +20,17 @@ export default function RegisterPage() {
       await api({
         method: "POST",
         url: "/register",
-        data: { fullName, email, password },
+        data: { fullName, email, password, TeamId: team },
       });
-      navigate("/login");
+      Toast.fire({
+        icon: "success",
+        title: "Success",
+        text: "Successful register",
+      });
+      navigate("/");
     } catch (err) {
       console.log(err, "<<< err handleRegister");
-      Swal.fire({
+      Toast.fire({
         icon: "error",
         title: "Error",
         text: err.response.data.message,
@@ -34,7 +40,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex justify-center items-center h-dvh">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 scale-125">
         <HTGLogo />
 
         <form onSubmit={handleRegister}>
@@ -44,7 +50,7 @@ export default function RegisterPage() {
             </h1>
 
             <AuthInput
-              label="Username"
+              label="Full Name"
               type="text"
               value={fullName}
               setValue={setFullName}
@@ -69,6 +75,8 @@ export default function RegisterPage() {
                 <input
                   type="radio"
                   name="team-radio"
+                  value="1"
+                  onClick={(e) => setTeam(e.target.value)}
                   className="radio bg-red-100 border-red-300 checked:bg-red-200 checked:text-red-600 checked:border-red-600"
                 />
               </div>
@@ -79,6 +87,8 @@ export default function RegisterPage() {
                 <input
                   type="radio"
                   name="team-radio"
+                  value="2"
+                  onClick={(e) => setTeam(e.target.value)}
                   className="radio bg-blue-100 border-blue-300 checked:bg-blue-200 checked:text-blue-600 checked:border-blue-600"
                 />
               </div>
@@ -89,6 +99,8 @@ export default function RegisterPage() {
                 <input
                   type="radio"
                   name="team-radio"
+                  value="3"
+                  onClick={(e) => setTeam(e.target.value)}
                   className="radio bg-purple-100 border-purple-300 checked:bg-purple-200 checked:text-purple-600 checked:border-purple-600"
                 />
               </div>
@@ -100,7 +112,7 @@ export default function RegisterPage() {
 
             <p className="fieldset-label">
               Already have a Hack The Grid account?{" "}
-              <Link to="/login" className="text-primary">
+              <Link to="/" className="text-primary">
                 Sign In →
               </Link>
             </p>

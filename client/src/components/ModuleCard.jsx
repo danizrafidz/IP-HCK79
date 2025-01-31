@@ -1,6 +1,19 @@
 import { SiSendgrid } from "react-icons/si";
+import { MdFactCheck } from "react-icons/md";
+import { ImBoxRemove } from "react-icons/im";
+import { useNavigate } from "react-router";
+import { FaCheck } from "react-icons/fa";
+import Toast from "../helpers/toast";
+import api from "../helpers/axiosInstance";
 
-export default function ModuleCard({ module }) {
+export default function ModuleCard({
+  module,
+  cardType,
+  fetchModulesUnlocked,
+  myModuleId,
+  isCompleted,
+}) {
+  const navigate = useNavigate();
   let teamColor = {
     Red: "bg-[#422834] text-[#ff3d3d]",
     Blue: "bg-[#153557] text-[#0088ff]",
@@ -22,8 +35,89 @@ export default function ModuleCard({ module }) {
     Hard: "bg-[#422834] text-[#ff3d3d]",
   };
 
+  const access_token = localStorage.getItem("access_token");
+  async function handleUnlockModule() {
+    try {
+      await api({
+        method: "POST",
+        url: `/mymodules/${module.id}`,
+        headers: {
+          authorization: `Bearer ${access_token}`,
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Success",
+        text: "You have unlocked a module",
+      });
+      navigate("/modules/unlocked");
+    } catch (err) {
+      console.log(err, "<<< err handleUnlockModule");
+      Toast.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response.data.message,
+      });
+    }
+  }
+
+  async function handleRemoveModule() {
+    try {
+      await api({
+        method: "DELETE",
+        url: `/mymodules/${myModuleId}`,
+        headers: {
+          authorization: `Bearer ${access_token}`,
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Success",
+        text: "You have removed a module",
+      });
+      await fetchModulesUnlocked();
+    } catch (err) {
+      console.log(err, "<<< err handleRemoveModule");
+      Toast.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response.data.message,
+      });
+    }
+  }
+
+  async function handleCompleteModule() {
+    try {
+      await api({
+        method: "PATCH",
+        url: `/mymodules/${myModuleId}/complete`,
+        headers: {
+          authorization: `Bearer ${access_token}`,
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Success",
+        text: "You have completed a module",
+      });
+      await fetchModulesUnlocked();
+    } catch (err) {
+      console.log(err, "<<< err handleCompleteModule");
+      Toast.fire({
+        icon: "error",
+        title: "Error",
+        text: err.response.data.message,
+      });
+    }
+  }
+
   return (
-    <div className="card bg-[#1b2333] w-96 shadow-sm m-3">
+    <div
+      onClick={() => navigate(`/module/details/${module.id}`)}
+      className={`card bg-[#1b2333] w-96 shadow-sm m-3 cursor-pointer ${
+        cardType === "RecModule" ? "border-2 border-primary" : ""
+      }`}
+    >
       <figure>
         <img src={module.imageUrl} alt={module.title} />
       </figure>
@@ -44,12 +138,43 @@ export default function ModuleCard({ module }) {
             </div>
           </div>
 
-          <div>
-            <button className="btn btn-sm btn-outline btn-primary">
-              <SiSendgrid />
-              Unlock
-            </button>
-          </div>
+          {cardType === "Module" || cardType === "RecModule" ? (
+            <div>
+              <button
+                className="btn btn-sm btn-outline btn-primary"
+                onClick={handleUnlockModule}
+              >
+                <SiSendgrid />
+                Unlock
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-end gap-2">
+              <button
+                className="btn btn-sm btn-outline btn-error"
+                onClick={handleRemoveModule}
+              >
+                <ImBoxRemove />
+                Remove
+              </button>
+              {isCompleted ? (
+                <button
+                  className="btn btn-sm btn-outline btn-primary"
+                  onClick={handleCompleteModule}
+                >
+                  <FaCheck />
+                </button>
+              ) : (
+                <button
+                  className="btn btn-sm btn-outline btn-info"
+                  onClick={handleCompleteModule}
+                >
+                  <MdFactCheck />
+                  Complete
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

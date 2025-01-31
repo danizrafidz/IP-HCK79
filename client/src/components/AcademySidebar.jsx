@@ -1,11 +1,51 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { IoLogOut } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import api from "../helpers/axiosInstance";
+import Toast from "../helpers/toast";
 
 export default function AcademySidebar() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
+  const [files, setFiles] = useState(null);
   const access_token = localStorage.getItem("access_token");
+  const navigate = useNavigate();
+
+  const handleUploadGalleries = async (e) => {
+    try {
+      e.preventDefault();
+
+      console.log("uploading...");
+
+      // formData.append("galleries", file);
+
+      const formData = new FormData();
+      Array.from(files).forEach((file) => {
+        formData.append("galleries", file);
+      });
+
+      const response = await api.patch(`/user/cover-galleries`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
+      await fetchUser();
+      console.log("uploaded.");
+      Toast.fire({
+        title: "Success",
+        icon: "success",
+        text: "Success upload image",
+      });
+    } catch (err) {
+      console.log(err, "<<< err handleOnUpload");
+      Toast.fire({
+        title: "Error",
+        icon: "error",
+        text: err.response.data.message,
+      });
+    }
+  };
 
   async function fetchUser() {
     try {
@@ -16,7 +56,6 @@ export default function AcademySidebar() {
           authorization: `Bearer ${access_token}`,
         },
       });
-      console.log(data);
 
       setUser(data);
     } catch (err) {
@@ -27,13 +66,11 @@ export default function AcademySidebar() {
     fetchUser();
   }, []);
 
-  function handleLogout() {
-    try {
-      localStorage.removeItem("access_token");
-    } catch (err) {
-      console.log(err, "<<< err handleLogout");
-    }
-  }
+  let teamColor = {
+    Red: "bg-[#422834] text-[#ff3d3d]",
+    Blue: "bg-[#153557] text-[#0088ff]",
+    Purple: "bg-[#321d57] text-[#c466ff]",
+  };
 
   return (
     <aside className="flex flex-col w-64 rounded h-screen px-4 py-8 ml-8 overflow-y-auto bg-[#111926] rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
@@ -48,6 +85,13 @@ export default function AcademySidebar() {
         </h4>
         <p className="mx-2 mt-1 text-sm font-medium text-[#a3b0cc] dark:text-gray-400">
           {user.email}
+        </p>
+        <p
+          className={`badge mx-2 mt-1 text-sm font-medium ${
+            teamColor[user.Team?.name]
+          } dark:text-gray-400`}
+        >
+          {user.Team?.name} Team
         </p>
       </div>
       <div className="flex flex-col justify-between flex-1 mt-6">
@@ -122,15 +166,49 @@ export default function AcademySidebar() {
             <span className="mx-4 font-medium">Profiles</span>
           </Link>
 
-          <Link
-            className="flex items-center px-4 py-2 mt-5 text-[#fc3d3d] transition-colors duration-300 transform rounded-lg dark:text-gray-400 hover:bg-primary dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-            to="/login"
-            onClick={handleLogout}
-          >
-            <IoLogOut className="size-5" />
-            <span className="mx-4 font-medium">Logout</span>
-          </Link>
+          
         </nav>
+
+        <div>
+          <div className="divider divider-[#a3b0cc] text-[#a3b0cc] font-medium text-xs">
+            Cyber Galleries
+          </div>
+          <div className="carousel carousel-vertical rounded-box h-60">
+            {user.galleries?.map((gallery, i) => (
+              <div
+                key={i + 1}
+                className="carousel-item h-full border-2 border-primary"
+              >
+                <Link to={gallery} target="_blank" rel="noopener noreferrer">
+                  <img src={gallery} />
+                </Link>
+              </div>
+            ))}
+          </div>
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 10,
+            }}
+            onSubmit={handleUploadGalleries}
+          >
+            <input
+              type="file"
+              multiple
+              onChange={(e) => setFiles([...e.target.files])}
+              className="file-input file-input-bordered w-full max-w-xs mt-8"
+            />
+            <div className="flex w-half justify-between">
+              <input
+                className="btn bg-brand-orange text-white font-extrabold"
+                type="submit"
+                value="Upload"
+              />
+            </div>
+          </form>
+        </div>
       </div>
     </aside>
   );

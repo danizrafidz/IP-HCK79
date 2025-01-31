@@ -1,5 +1,4 @@
 import { Navigate, Outlet } from "react-router";
-import Navbar from "../components/Navbar";
 import AcademyNavbar from "../components/AcademyNavbar";
 import AcademySidebar from "../components/AcademySidebar";
 
