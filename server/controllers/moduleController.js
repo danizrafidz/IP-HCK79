@@ -40,7 +40,8 @@ class ModuleController {
         }
       })
       let team = user.Team
-
+      console.log(team);
+      
       let modules = await Module.findAll({
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
@@ -109,10 +110,10 @@ class ModuleController {
         const result = await model.generateContent(prompt);
         const rawRecModules = JSON.parse(result.response.text());
 
-        console.log(rawRecModules, "<<< modules");
+        // console.log(rawRecModules, "<<< modules");
 
         const recModules = modules.filter((module) => rawRecModules.some((rec) => rec.id === module.id));
-        console.log(recModules, "<<< recModules");
+        // console.log(recModules, "<<< recModules");
 
         res.status(200).json(recModules)
       })();

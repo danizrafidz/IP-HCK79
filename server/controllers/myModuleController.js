@@ -44,11 +44,16 @@ class ModuleController {
 
       // Response (400 - Bad Request)
       let myModule = await MyModule.findOne({
-        where: { ModuleId: module.id }
+        where: { 
+          ModuleId: module.id,
+          UserId: userId
+        }
       })
+      console.log(myModule, "<<<INI");
       if (myModule) {
         throw { name: "BadRequest", message: "You cannot add same module" }
       }
+
 
       myModule = await MyModule.create({ UserId: userId, ModuleId: moduleId })
 
